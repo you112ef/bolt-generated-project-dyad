@@ -19,7 +19,6 @@ export const editorOptions: monaco.editor.IStandaloneEditorConstructionOptions =
   roundedSelection: false,
   readOnly: false,
   cursorStyle: 'line',
-  automaticLayout: true,
   contextmenu: true,
   mouseWheelZoom: true,
   quickSuggestions: {
@@ -31,7 +30,7 @@ export const editorOptions: monaco.editor.IStandaloneEditorConstructionOptions =
   acceptSuggestionOnCommitCharacter: true,
   acceptSuggestionOnEnter: 'on',
   tabCompletion: 'on',
-  wordBasedSuggestions: true,
+  wordBasedSuggestions: 'currentDocument',
   parameterHints: {
     enabled: true,
     cycle: true
@@ -80,7 +79,6 @@ export const editorOptions: monaco.editor.IStandaloneEditorConstructionOptions =
 
 // Diff editor options
 export const diffEditorOptions: monaco.editor.IDiffEditorConstructionOptions = {
-  theme: 'dyad-dark',
   fontSize: 14,
   fontFamily: 'JetBrains Mono, Fira Code, monospace',
   lineHeight: 1.6,
@@ -88,22 +86,14 @@ export const diffEditorOptions: monaco.editor.IDiffEditorConstructionOptions = {
   enableSplitViewResizing: true,
   renderOverviewRuler: true,
   ignoreTrimWhitespace: false,
-  renderIndicators: true,
-  originalEditor: {
-    readOnly: true
-  },
-  modifiedEditor: {
-    readOnly: false
-  }
+  renderIndicators: true
 }
 
 // Model options
 export const modelOptions: monaco.editor.ITextModelUpdateOptions = {
   tabSize: 2,
   insertSpaces: true,
-  detectIndentation: true,
   trimAutoWhitespace: true,
-  largeFileOptimizations: true,
   bracketPairColorization: {
     enabled: true
   },

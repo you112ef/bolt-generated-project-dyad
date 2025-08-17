@@ -124,7 +124,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
         if (parsed.theme && ['light', 'dark', 'system'].includes(parsed.theme)) {
           dispatch({ type: 'SET_THEME', payload: parsed.theme })
         }
-        if (parsed.language) {
+        if (parsed.language && typeof parsed.language === 'string') {
           dispatch({ type: 'SET_LANGUAGE', payload: parsed.language })
         }
         if (typeof parsed.autoSave === 'boolean') {
@@ -133,10 +133,10 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
         if (Array.isArray(parsed.apiProviders)) {
           dispatch({ type: 'SET_API_PROVIDERS', payload: parsed.apiProviders })
         }
-        if (parsed.githubToken) {
+        if (parsed.githubToken && typeof parsed.githubToken === 'string') {
           dispatch({ type: 'SET_GITHUB_TOKEN', payload: parsed.githubToken })
         }
-        if (parsed.databaseUrl) {
+        if (parsed.databaseUrl && typeof parsed.databaseUrl === 'string') {
           dispatch({ type: 'SET_DATABASE_URL', payload: parsed.databaseUrl })
         }
       }

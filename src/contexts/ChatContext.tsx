@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useCallback, ReactNode } from 'react'
-import { ChatMessage, Message, Conversation } from '../types'
+import { ChatMessage, Conversation } from '../types'
 
 // Chat state interface
 interface ChatState {

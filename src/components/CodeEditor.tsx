@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import Editor from '@monaco-editor/react'
-import { editorOptions, diffEditorOptions, initializeMonaco } from '../lib/monaco-config'
+import { editorOptions, initializeMonaco } from '../lib/monaco-config'
 
 const CodeEditor: React.FC = () => {
   const [code, setCode] = useState('// Start coding here...\nconsole.log("Hello, World!");')

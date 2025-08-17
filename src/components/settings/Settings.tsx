@@ -11,6 +11,7 @@ const Settings: React.FC = () => {
     type: 'openai' as ProviderType,
     baseUrl: '',
     apiKey: '',
+    isActive: true,
     config: {}
   })
 
@@ -22,6 +23,7 @@ const Settings: React.FC = () => {
         type: 'openai',
         baseUrl: '',
         apiKey: '',
+        isActive: true,
         config: {}
       })
       setShowAddProvider(false)
@@ -35,6 +37,7 @@ const Settings: React.FC = () => {
       type: provider.type,
       baseUrl: provider.baseUrl,
       apiKey: provider.apiKey,
+      isActive: provider.isActive,
       config: provider.config
     })
     setShowAddProvider(true)
@@ -49,6 +52,7 @@ const Settings: React.FC = () => {
         type: 'openai',
         baseUrl: '',
         apiKey: '',
+        isActive: true,
         config: {}
       })
       setShowAddProvider(false)
@@ -63,6 +67,7 @@ const Settings: React.FC = () => {
       type: 'openai',
       baseUrl: '',
       apiKey: '',
+      isActive: true,
       config: {}
     })
   }
@@ -321,7 +326,7 @@ const Settings: React.FC = () => {
                   </label>
                   <input
                     type={field.type}
-                    value={newProvider.config[field.key] || ''}
+                    value={(newProvider.config as any)[field.key] || ''}
                     onChange={(e) => setNewProvider({
                       ...newProvider,
                       config: {

@@ -6,7 +6,7 @@ import MessagesList from './MessagesList'
 import MessageInput from './MessageInput'
 
 const ChatInterface: React.FC = () => {
-  const { state, createConversation, loadConversation, deleteConversation } = useChat()
+  const { state, createConversation, loadConversation, deleteConversation, sendMessage } = useChat()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const handleNewConversation = () => {
@@ -51,8 +51,7 @@ const ChatInterface: React.FC = () => {
         
         <MessageInput
           onSendMessage={(content) => {
-            // This will be handled by the context
-            console.log('Sending message:', content)
+            sendMessage(content)
           }}
           disabled={state.isLoading}
         />

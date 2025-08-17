@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { ChatMessage } from '../../types'
-import ChatMessage from './ChatMessage'
+import { ChatMessage as ChatMessageType } from '../../types'
+import ChatMessageComponent from './ChatMessage'
 
 interface MessagesListProps {
-  messages: ChatMessage[]
+  messages: ChatMessageType[]
   isLoading: boolean
   error: string | null
 }
@@ -58,7 +58,7 @@ const MessagesList: React.FC<MessagesListProps> = ({ messages, isLoading, error 
   return (
     <div className="flex-1 overflow-y-auto p-4 space-y-4">
       {messages.map((message) => (
-        <ChatMessage key={message.id} message={message} />
+        <ChatMessageComponent key={message.id} message={message} />
       ))}
       
       {isLoading && (
