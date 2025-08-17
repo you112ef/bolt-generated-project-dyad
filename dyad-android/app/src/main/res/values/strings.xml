@@ -1,0 +1,4 @@
+<resources>
+        <string name="app_name">Dyad</string>
+        <string name="title_activity_main">Dyad Terminal</string>
+    </resources>
