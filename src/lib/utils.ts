@@ -1,11 +1,13 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
+// Utility function for merging class names with Tailwind
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatBytes(bytes: number, decimals = 2) {
+// Format bytes to human readable format
+export function formatBytes(bytes: number, decimals: number = 2): string {
   if (bytes === 0) return '0 Bytes'
   
   const k = 1024
@@ -17,6 +19,7 @@ export function formatBytes(bytes: number, decimals = 2) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
 }
 
+// Format duration in milliseconds to human readable format
 export function formatDuration(ms: number): string {
   if (ms < 1000) return `${ms}ms`
   if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`
@@ -24,6 +27,7 @@ export function formatDuration(ms: number): string {
   return `${(ms / 3600000).toFixed(1)}h`
 }
 
+// Debounce function
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
@@ -35,6 +39,7 @@ export function debounce<T extends (...args: any[]) => any>(
   }
 }
 
+// Throttle function
 export function throttle<T extends (...args: any[]) => any>(
   func: T,
   limit: number
@@ -49,10 +54,12 @@ export function throttle<T extends (...args: any[]) => any>(
   }
 }
 
+// Generate unique ID
 export function generateId(): string {
   return Math.random().toString(36).substr(2, 9)
 }
 
+// Validate URL
 export function isValidUrl(string: string): boolean {
   try {
     new URL(string)
@@ -62,15 +69,18 @@ export function isValidUrl(string: string): boolean {
   }
 }
 
+// Truncate text to specified length
 export function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text
   return text.substr(0, maxLength) + '...'
 }
 
+// Capitalize first letter
 export function capitalizeFirst(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
+// Convert to kebab case
 export function kebabCase(str: string): string {
   return str
     .replace(/([a-z])([A-Z])/g, '$1-$2')
@@ -78,6 +88,7 @@ export function kebabCase(str: string): string {
     .toLowerCase()
 }
 
+// Convert to camel case
 export function camelCase(str: string): string {
   return str
     .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
@@ -86,6 +97,7 @@ export function camelCase(str: string): string {
     .replace(/\s+/g, '')
 }
 
+// Convert to snake case
 export function snakeCase(str: string): string {
   return str
     .replace(/([a-z])([A-Z])/g, '$1_$2')
@@ -93,6 +105,7 @@ export function snakeCase(str: string): string {
     .toLowerCase()
 }
 
+// Deep clone object
 export function deepClone<T>(obj: T): T {
   if (obj === null || typeof obj !== 'object') return obj
   if (obj instanceof Date) return new Date(obj.getTime()) as T
@@ -109,27 +122,42 @@ export function deepClone<T>(obj: T): T {
   return obj
 }
 
-export function isEmpty(value: any): boolean {
-  if (value === null || value === undefined) return true
-  if (typeof value === 'string') return value.trim().length === 0
-  if (Array.isArray(value)) return value.length === 0
-  if (typeof value === 'object') return Object.keys(value).length === 0
+// Check if object is empty
+export function isEmpty(obj: any): boolean {
+  if (obj == null) return true
+  if (Array.isArray(obj) || typeof obj === 'string') return obj.length === 0
+  if (obj instanceof Map || obj instanceof Set) return obj.size === 0
+  if (typeof obj === 'object') return Object.keys(obj).length === 0
   return false
 }
 
+// Sleep function
 export function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export function retry<T>(
+// Retry function with exponential backoff
+export async function retry<T>(
   fn: () => Promise<T>,
-  retries: number = 3,
-  delay: number = 1000
+  maxAttempts: number = 3,
+  baseDelay: number = 1000
 ): Promise<T> {
-  return fn().catch(error => {
-    if (retries > 0) {
-      return sleep(delay).then(() => retry(fn, retries - 1, delay * 2))
+  let lastError: Error
+  
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      return await fn()
+    } catch (error) {
+      lastError = error as Error
+      
+      if (attempt === maxAttempts) {
+        throw lastError
+      }
+      
+      const delay = baseDelay * Math.pow(2, attempt - 1)
+      await sleep(delay)
     }
-    throw error
-  })
+  }
+  
+  throw lastError!
 }

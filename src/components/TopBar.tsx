@@ -1,120 +1,114 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useSettings } from '../contexts/SettingsContext'
-import './TopBar.css'
 
 interface TopBarProps {
-  activeView: 'chat' | 'editor' | 'settings'
   onViewChange: (view: 'chat' | 'editor' | 'settings') => void
 }
 
-const TopBar: React.FC<TopBarProps> = ({ activeView, onViewChange }) => {
+const TopBar: React.FC<TopBarProps> = ({ onViewChange }) => {
   const { settings } = useSettings()
-  const [isGitHubAuthenticated, setIsGitHubAuthenticated] = useState(false)
-  const [showGitHubMenu, setShowGitHubMenu] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const handleGitHubAuth = () => {
-    // In production, this would redirect to GitHub OAuth
-    // For demo purposes, we'll simulate authentication
-    setIsGitHubAuthenticated(true)
-    setShowGitHubMenu(false)
-  }
-
-  const handleGitHubLogout = () => {
-    setIsGitHubAuthenticated(false)
-    setShowGitHubMenu(false)
-  }
-
-  const getActiveProvidersCount = () => {
-    return settings.apiProviders.filter(p => p.isActive).length
-  }
+  const activeProvidersCount = settings.apiProviders.filter(p => p.isActive).length
 
   return (
-    <header className="top-bar">
-      <div className="top-bar-left">
-        <div className="logo">
-          <span className="logo-icon">⚡</span>
-          <span className="logo-text">Dyad</span>
-        </div>
-        
-        <nav className="navigation">
-          <button
-            className={`nav-tab ${activeView === 'chat' ? 'active' : ''}`}
-            onClick={() => onViewChange('chat')}
-          >
-            <span className="nav-icon">💬</span>
-            Chat
-          </button>
-          <button
-            className={`nav-tab ${activeView === 'editor' ? 'active' : ''}`}
-            onClick={() => onViewChange('editor')}
-          >
-            <span className="nav-icon">📝</span>
-            Editor
-          </button>
-          <button
-            className={`nav-tab ${activeView === 'settings' ? 'active' : ''}`}
-            onClick={() => onViewChange('settings')}
-          >
-            <span className="nav-icon">⚙️</span>
-            Settings
-          </button>
-        </nav>
-      </div>
-
-      <div className="top-bar-right">
-        <div className="status-indicators">
-          <div className="provider-status">
-            <span className="status-icon">🔌</span>
-            <span className="status-text">
-              {getActiveProvidersCount()} Active
-            </span>
-          </div>
+    <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+            Dyad Web Demo
+          </h1>
           
-          <div className="connection-status">
-            <span className="status-icon">🌐</span>
-            <span className="status-text">Connected</span>
-          </div>
+          <nav className="hidden md:flex space-x-1">
+            <button
+              onClick={() => onViewChange('chat')}
+              className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+            >
+              Chat
+            </button>
+            <button
+              onClick={() => onViewChange('editor')}
+              className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+            >
+              Editor
+            </button>
+            <button
+              onClick={() => onViewChange('settings')}
+              className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+            >
+              Settings
+            </button>
+          </nav>
         </div>
 
-        <div className="user-section">
-          <div className="github-auth">
-            {isGitHubAuthenticated ? (
-              <div className="github-user">
-                <button
-                  className="github-button authenticated"
-                  onClick={() => setShowGitHubMenu(!showGitHubMenu)}
-                >
-                  <span className="github-icon">🐙</span>
-                  <span className="github-username">Authenticated</span>
-                  <span className="dropdown-arrow">▼</span>
-                </button>
-                
-                {showGitHubMenu && (
-                  <div className="github-menu">
-                    <button className="menu-item" onClick={handleGitHubLogout}>
-                      <span className="menu-icon">🚪</span>
-                      Sign Out
-                    </button>
-                    <button className="menu-item">
-                      <span className="menu-icon">👤</span>
-                      Profile
-                    </button>
-                    <button className="menu-item">
-                      <span className="menu-icon">🔑</span>
-                      API Keys
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <button className="github-button" onClick={handleGitHubAuth}>
-                <span className="github-icon">🐙</span>
-                <span className="github-text">Sign in with GitHub</span>
-              </button>
-            )}
+        <div className="flex items-center space-x-4">
+          {/* Status indicators */}
+          <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1">
+              <div className={`w-2 h-2 rounded-full ${activeProvidersCount > 0 ? 'bg-green-500' : 'bg-red-500'}`} />
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {activeProvidersCount} API Provider{activeProvidersCount !== 1 ? 's' : ''}
+              </span>
+            </div>
           </div>
+
+          {/* Theme toggle */}
+          <button
+            onClick={() => {
+              const newTheme = settings.theme === 'dark' ? 'light' : 'dark'
+              settings.updateSettings({ theme: newTheme })
+            }}
+            className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            {settings.theme === 'dark' ? '🌞' : '🌙'}
+          </button>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
         </div>
       </div>
+
+      {/* Mobile menu */}
+      {isMenuOpen && (
+        <div className="md:hidden mt-3 pb-3 border-t border-gray-200 dark:border-gray-700">
+          <nav className="flex flex-col space-y-1">
+            <button
+              onClick={() => {
+                onViewChange('chat')
+                setIsMenuOpen(false)
+              }}
+              className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors text-left"
+            >
+              Chat
+            </button>
+            <button
+              onClick={() => {
+                onViewChange('editor')
+                setIsMenuOpen(false)
+              }}
+              className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors text-left"
+            >
+              Editor
+            </button>
+            <button
+              onClick={() => {
+                onViewChange('settings')
+                setIsMenuOpen(false)
+              }}
+              className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors text-left"
+            >
+              Settings
+            </button>
+          </nav>
+        </div>
+      )}
     </header>
   )
 }

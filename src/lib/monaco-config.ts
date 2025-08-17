@@ -1,275 +1,275 @@
-import { editor } from 'monaco-editor'
+import * as monaco from 'monaco-editor'
 
-// Monaco Editor configuration based on dyad project
-export const monacoConfig = {
-  // Editor options
-  editor: {
-    fontSize: 14,
-    fontFamily: 'JetBrains Mono, Fira Code, Consolas, monospace',
-    lineHeight: 20,
-    letterSpacing: 0.5,
-    wordWrap: 'on',
-    minimap: {
-      enabled: false
-    },
-    scrollBeyondLastLine: false,
-    automaticLayout: true,
-    theme: 'vs-dark',
-    renderWhitespace: 'selection',
-    tabSize: 2,
-    insertSpaces: true,
-    detectIndentation: true,
-    trimAutoWhitespace: true,
-    largeFileOptimizations: true,
-    suggest: {
-      showKeywords: true,
-      showSnippets: true,
-      showClasses: true,
-      showFunctions: true,
-      showVariables: true,
-      showConstants: true,
-      showEnums: true,
-      showEnumsMembers: true,
-      showColors: true,
-      showFiles: true,
-      showReferences: true,
-      showFolders: true,
-      showTypeParameters: true,
-      showWords: true,
-      showUsers: true,
-      showIssues: true,
-      showColors: true,
-      showFiles: true,
-      showReferences: true,
-      showFolders: true,
-      showTypeParameters: true,
-      showWords: true,
-      showUsers: true,
-      showIssues: true
-    },
-    quickSuggestions: {
-      other: true,
-      comments: true,
-      strings: true
-    },
-    parameterHints: {
-      enabled: true
-    },
-    autoIndent: 'full',
-    formatOnPaste: true,
-    formatOnType: true,
-    dragAndDrop: true,
-    copyWithSyntaxHighlighting: true,
-    emptySelectionClipboard: false,
-    folding: true,
-    foldingStrategy: 'auto',
-    showFoldingControls: 'always',
-    unfoldOnClickAfterEnd: false,
-    links: true,
-    colorDecorators: true,
-    lightbulb: {
-      enabled: true
-    },
-    codeActionsOnSave: {
-      'source.fixAll': true,
-      'source.organizeImports': true
-    }
+// Editor options
+export const editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
+  theme: 'dyad-dark',
+  fontSize: 14,
+  fontFamily: 'JetBrains Mono, Fira Code, monospace',
+  lineHeight: 1.6,
+  minimap: { enabled: true },
+  scrollBeyondLastLine: false,
+  automaticLayout: true,
+  wordWrap: 'on',
+  folding: true,
+  lineNumbers: 'on',
+  glyphMargin: true,
+  foldingStrategy: 'indentation',
+  showFoldingControls: 'always',
+  selectOnLineNumbers: true,
+  roundedSelection: false,
+  readOnly: false,
+  cursorStyle: 'line',
+  automaticLayout: true,
+  contextmenu: true,
+  mouseWheelZoom: true,
+  quickSuggestions: {
+    other: true,
+    comments: true,
+    strings: true
   },
-  
-  // Diff editor options
-  diffEditor: {
-    renderSideBySide: true,
-    ignoreTrimWhitespace: false,
-    renderIndicators: true,
-    originalEditable: false,
-    modifiedEditable: true
+  suggestOnTriggerCharacters: true,
+  acceptSuggestionOnCommitCharacter: true,
+  acceptSuggestionOnEnter: 'on',
+  tabCompletion: 'on',
+  wordBasedSuggestions: true,
+  parameterHints: {
+    enabled: true,
+    cycle: true
   },
-  
-  // Model options
-  model: {
-    tabSize: 2,
-    insertSpaces: true,
-    detectIndentation: true,
-    trimAutoWhitespace: true,
-    largeFileOptimizations: true
+  hover: {
+    enabled: true,
+    delay: 300
+  },
+  links: true,
+  colorDecorators: true,
+  lightbulb: {
+    enabled: true
+  },
+  codeActionsOnSave: {
+    'source.fixAll': true,
+    'source.organizeImports': true
+  },
+  formatOnPaste: true,
+  formatOnType: true,
+  suggest: {
+    insertMode: 'replace',
+    showKeywords: true,
+    showSnippets: true,
+    showClasses: true,
+    showFunctions: true,
+    showVariables: true,
+    showModules: true,
+    showProperties: true,
+    showEvents: true,
+    showOperators: true,
+    showUnits: true,
+    showValues: true,
+    showConstants: true,
+    showEnums: true,
+    showEnumMembers: true,
+    showColors: true,
+    showFiles: true,
+    showReferences: true,
+    showFolders: true,
+    showTypeParameters: true,
+    showWords: true,
+    showUsers: true,
+    showIssues: true
   }
 }
 
-// Custom themes based on dyad
+// Diff editor options
+export const diffEditorOptions: monaco.editor.IDiffEditorConstructionOptions = {
+  theme: 'dyad-dark',
+  fontSize: 14,
+  fontFamily: 'JetBrains Mono, Fira Code, monospace',
+  lineHeight: 1.6,
+  renderSideBySide: true,
+  enableSplitViewResizing: true,
+  renderOverviewRuler: true,
+  ignoreTrimWhitespace: false,
+  renderIndicators: true,
+  originalEditor: {
+    readOnly: true
+  },
+  modifiedEditor: {
+    readOnly: false
+  }
+}
+
+// Model options
+export const modelOptions: monaco.editor.ITextModelUpdateOptions = {
+  tabSize: 2,
+  insertSpaces: true,
+  detectIndentation: true,
+  trimAutoWhitespace: true,
+  largeFileOptimizations: true,
+  bracketPairColorization: {
+    enabled: true
+  },
+  guides: {
+    bracketPairs: true,
+    indentation: true,
+    highlightActiveIndentation: true
+  }
+}
+
+// Language-specific configurations
+export const languageConfigs: Record<string, monaco.languages.LanguageConfiguration> = {
+  typescript: {
+    comments: {
+      lineComment: '//',
+      blockComment: ['/*', '*/']
+    },
+    brackets: [
+      ['{', '}'],
+      ['[', ']'],
+      ['(', ')']
+    ],
+    autoClosingPairs: [
+      { open: '{', close: '}' },
+      { open: '[', close: ']' },
+      { open: '(', close: ')' },
+      { open: "'", close: "'", notIn: ['string', 'comment'] },
+      { open: '"', close: '"', notIn: ['string'] },
+      { open: '`', close: '`', notIn: ['string', 'comment'] }
+    ],
+    surroundingPairs: [
+      { open: '{', close: '}' },
+      { open: '[', close: ']' },
+      { open: '(', close: ')' },
+      { open: "'", close: "'" },
+      { open: '"', close: '"' },
+      { open: '`', close: '`' }
+    ]
+  },
+  javascript: {
+    comments: {
+      lineComment: '//',
+      blockComment: ['/*', '*/']
+    },
+    brackets: [
+      ['{', '}'],
+      ['[', ']'],
+      ['(', ')']
+    ],
+    autoClosingPairs: [
+      { open: '{', close: '}' },
+      { open: '[', close: ']' },
+      { open: '(', close: ')' },
+      { open: "'", close: "'", notIn: ['string', 'comment'] },
+      { open: '"', close: '"', notIn: ['string'] },
+      { open: '`', close: '`', notIn: ['string', 'comment'] }
+    ],
+    surroundingPairs: [
+      { open: '{', close: '}' },
+      { open: '[', close: ']' },
+      { open: '(', close: ')' },
+      { open: "'", close: "'" },
+      { open: '"', close: '"' },
+      { open: '`', close: '`' }
+    ]
+  }
+}
+
+// Custom themes
 export const customThemes = {
   'dyad-light': {
-    base: 'vs',
-    inherit: false,
+    base: 'vs' as const,
+    inherit: true,
     rules: [
-      { token: '', foreground: '000000', background: 'fffffe' },
-      { token: 'invalid', foreground: 'cd3131' },
-      { token: 'emphasis', fontStyle: 'italic' },
-      { token: 'strong', fontStyle: 'bold' },
-      { token: 'variable', foreground: '001188' },
-      { token: 'variable.predefined', foreground: '4864AA' },
-      { token: 'constant', foreground: 'dd0000' },
-      { token: 'comment', foreground: '008000' },
-      { token: 'string', foreground: 'a31515' },
-      { token: 'string.escape', foreground: 'ff0000' },
-      { token: 'keyword', foreground: '0000ff' },
-      { token: 'storage', foreground: '0000ff' },
-      { token: 'entity.name.function', foreground: '795e26' },
-      { token: 'entity.name.type', foreground: '267f99' },
-      { token: 'entity.other.attribute-name', foreground: 'ff0000' },
-      { token: 'support.function', foreground: '267f99' },
-      { token: 'support.constant', foreground: '0000ff' },
-      { token: 'support.type', foreground: '267f99' },
-      { token: 'support.class', foreground: '267f99' },
-      { token: 'support.other', foreground: '267f99' },
-      { token: 'invalid.deprecated', foreground: 'cd3131' }
+      { token: 'comment', foreground: '6A737D', fontStyle: 'italic' },
+      { token: 'keyword', foreground: 'D73A49' },
+      { token: 'string', foreground: '032F62' },
+      { token: 'number', foreground: '005CC5' },
+      { token: 'type', foreground: '445588' },
+      { token: 'function', foreground: '6F42C1' },
+      { token: 'variable', foreground: '24292E' },
+      { token: 'constant', foreground: 'E36209' },
+      { token: 'operator', foreground: 'D73A49' },
+      { token: 'delimiter', foreground: '24292E' }
     ],
     colors: {
-      'editor.background': '#ffffff',
-      'editor.foreground': '#000000',
-      'editor.lineHighlightBackground': '#f0f0f0',
-      'editor.selectionBackground': '#add6ff',
-      'editor.inactiveSelectionBackground': '#e5ebf1'
+      'editor.background': '#FFFFFF',
+      'editor.foreground': '#24292E',
+      'editor.lineHighlightBackground': '#F6F8FA',
+      'editor.selectionBackground': '#C8E1FF',
+      'editor.inactiveSelectionBackground': '#E1E4E8',
+      'editor.findMatchBackground': '#FFEB3B',
+      'editor.findMatchHighlightBackground': '#FFEB3B80',
+      'editorCursor.foreground': '#24292E',
+      'editorWhitespace.foreground': '#E1E4E8',
+      'editorIndentGuide.background': '#E1E4E8',
+      'editorIndentGuide.activeBackground': '#C8E1FF',
+      'editorLineNumber.foreground': '#6A737D',
+      'editorLineNumber.activeForeground': '#24292E',
+      'editorLineNumber.dimmedForeground': '#E1E4E8',
+      'editorRuler.foreground': '#E1E4E8',
+      'editorCodeLens.foreground': '#6A737D',
+      'editorBracketMatch.background': '#E1E4E8',
+      'editorBracketMatch.border': '#E1E4E8',
+      'editorOverviewRuler.border': '#E1E4E8',
+      'editorOverviewRuler.findMatchForeground': '#FFEB3B',
+      'editorOverviewRuler.errorForeground': '#D73A49',
+      'editorOverviewRuler.warningForeground': '#E36209',
+      'editorOverviewRuler.infoForeground': '#0366D6'
     }
   },
-  
   'dyad-dark': {
-    base: 'vs-dark',
-    inherit: false,
+    base: 'vs-dark' as const,
+    inherit: true,
     rules: [
-      { token: '', foreground: 'd4d4d4', background: '1e1e1e' },
-      { token: 'invalid', foreground: 'f44747' },
-      { token: 'emphasis', fontStyle: 'italic' },
-      { token: 'strong', fontStyle: 'bold' },
-      { token: 'variable', foreground: '9cdcfe' },
-      { token: 'variable.predefined', foreground: '4864AA' },
-      { token: 'constant', foreground: 'b5cea8' },
-      { token: 'comment', foreground: '6a9955' },
-      { token: 'string', foreground: 'ce9178' },
-      { token: 'string.escape', foreground: 'd7ba7d' },
-      { token: 'keyword', foreground: '569cd6' },
-      { token: 'storage', foreground: '569cd6' },
-      { token: 'entity.name.function', foreground: 'dcdcaa' },
-      { token: 'entity.name.type', foreground: '4ec9b0' },
-      { token: 'entity.other.attribute-name', foreground: '9cdcfe' },
-      { token: 'support.function', foreground: 'dcdcaa' },
-      { token: 'support.constant', foreground: '4fc1ff' },
-      { token: 'support.type', foreground: '4ec9b0' },
-      { token: 'support.class', foreground: '4ec9b0' },
-      { token: 'support.other', foreground: '4ec9b0' },
-      { token: 'invalid.deprecated', foreground: 'f44747' }
+      { token: 'comment', foreground: '6A737D', fontStyle: 'italic' },
+      { token: 'keyword', foreground: 'FF7B72' },
+      { token: 'string', foreground: 'A5D6FF' },
+      { token: 'number', foreground: '79C0FF' },
+      { token: 'type', foreground: 'FFA657' },
+      { token: 'function', foreground: 'D2A8FF' },
+      { token: 'variable', foreground: 'FFA8C4' },
+      { token: 'constant', foreground: '79C0FF' },
+      { token: 'operator', foreground: 'FF7B72' },
+      { token: 'delimiter', foreground: 'C9D1D9' }
     ],
     colors: {
-      'editor.background': '#1e1e1e',
-      'editor.foreground': '#d4d4d4',
-      'editor.lineHighlightBackground': '#2a2d2e',
-      'editor.selectionBackground': '#264f78',
-      'editor.inactiveSelectionBackground': '#3a3d41'
+      'editor.background': '#0D1117',
+      'editor.foreground': '#C9D1D9',
+      'editor.lineHighlightBackground': '#161B22',
+      'editor.selectionBackground': '#264F78',
+      'editor.inactiveSelectionBackground': '#21262D',
+      'editor.findMatchBackground': '#FFD33D',
+      'editor.findMatchHighlightBackground': '#FFD33D40',
+      'editorCursor.foreground': '#C9D1D9',
+      'editorWhitespace.foreground': '#21262D',
+      'editorIndentGuide.background': '#21262D',
+      'editorIndentGuide.activeBackground': '#264F78',
+      'editorLineNumber.foreground': '#8B949E',
+      'editorLineNumber.activeForeground': '#C9D1D9',
+      'editorLineNumber.dimmedForeground': '#21262D',
+      'editorRuler.foreground': '#21262D',
+      'editorCodeLens.foreground': '#8B949E',
+      'editorBracketMatch.background': '#21262D',
+      'editorBracketMatch.border': '#21262D',
+      'editorOverviewRuler.border': '#21262D',
+      'editorOverviewRuler.findMatchForeground': '#FFD33D',
+      'editorOverviewRuler.errorForeground': '#FF7B72',
+      'editorOverviewRuler.warningForeground': '#FFA657',
+      'editorOverviewRuler.infoForeground': '#79C0FF'
     }
   }
 }
 
-// Language configurations
-export const languageConfigs = {
-  typescript: {
-    wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
-    comments: {
-      lineComment: '//',
-      blockComment: ['/*', '*/']
-    },
-    brackets: [
-      ['{', '}'],
-      ['[', ']'],
-      ['(', ')']
-    ],
-    autoClosingPairs: [
-      { open: '{', close: '}' },
-      { open: '[', close: ']' },
-      { open: '(', close: ')' },
-      { open: '"', close: '"', notIn: ['string'] },
-      { open: "'", close: "'", notIn: ['string'] },
-      { open: '`', close: '`', notIn: ['string'] }
-    ],
-    surroundingPairs: [
-      { open: '{', close: '}' },
-      { open: '[', close: ']' },
-      { open: '(', close: ')' },
-      { open: '"', close: '"' },
-      { open: "'", close: "'" },
-      { open: '`', close: '`' }
-    ]
-  },
-  
-  javascript: {
-    wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
-    comments: {
-      lineComment: '//',
-      blockComment: ['/*', '*/']
-    },
-    brackets: [
-      ['{', '}'],
-      ['[', ']'],
-      ['(', ')']
-    ],
-    autoClosingPairs: [
-      { open: '{', close: '}' },
-      { open: '[', close: ']' },
-      { open: '(', close: ')' },
-      { open: '"', close: '"', notIn: ['string'] },
-      { open: "'", close: "'", notIn: ['string'] },
-      { open: '`', close: '`', notIn: ['string'] }
-    ],
-    surroundingPairs: [
-      { open: '{', close: '}' },
-      { open: '[', close: ']' },
-      { open: '(', close: ')' },
-      { open: '"', close: '"' },
-      { open: "'", close: "'" },
-      { open: '`', close: '`' }
-    ]
-  },
-  
-  python: {
-    wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
-    comments: {
-      lineComment: '#',
-      blockComment: ['"""', '"""']
-    },
-    brackets: [
-      ['{', '}'],
-      ['[', ']'],
-      ['(', ')']
-    ],
-    autoClosingPairs: [
-      { open: '{', close: '}' },
-      { open: '[', close: ']' },
-      { open: '(', close: ')' },
-      { open: '"', close: '"', notIn: ['string'] },
-      { open: "'", close: "'", notIn: ['string'] }
-    ],
-    surroundingPairs: [
-      { open: '{', close: '}' },
-      { open: '[', close: ']' },
-      { open: '(', close: ')' },
-      { open: '"', close: '"' },
-      { open: "'", close: "'" }
-    ]
-  }
-}
-
-// Initialize Monaco with custom configuration
-export const initializeMonaco = () => {
-  // Register custom themes
+// Initialize Monaco with custom themes and configurations
+export function initializeMonaco() {
+  // Define custom themes
   Object.entries(customThemes).forEach(([name, theme]) => {
-    editor.defineTheme(name, theme)
+    monaco.editor.defineTheme(name, theme)
   })
-  
-  // Register language configurations
-  Object.entries(languageConfigs).forEach(([language, config]) => {
-    editor.setModelLanguageConfiguration(language, config)
-  })
-  
-  // Set default theme
-  editor.setTheme('dyad-dark')
-}
 
-export default monacoConfig
+  // Set language configurations
+  Object.entries(languageConfigs).forEach(([language, config]) => {
+    monaco.languages.setLanguageConfiguration(language, config)
+  })
+
+  // Set default theme
+  monaco.editor.setTheme('dyad-dark')
+}
