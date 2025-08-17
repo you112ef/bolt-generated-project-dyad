@@ -29,7 +29,7 @@ console.log(greeting);`)
     { value: 'typescript', label: 'TypeScript', icon: '🔷' },
     { value: 'javascript', label: 'JavaScript', icon: '🟡' },
     { value: 'python', label: 'Python', icon: '🐍' },
-    { value: 'java', label: 'Java', label: '☕' },
+    { value: 'java', label: 'Java', icon: '☕' },
     { value: 'cpp', label: 'C++', icon: '⚡' },
     { value: 'csharp', label: 'C#', icon: '💎' },
     { value: 'go', label: 'Go', icon: '🐹' },
