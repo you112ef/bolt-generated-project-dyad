@@ -131,39 +131,59 @@ export function ChatProvider({ children }: ChatProviderProps) {
 
   // Send message function
   const sendMessage = useCallback(async (content: string, role: 'user' | 'assistant' | 'system' = 'user') => {
-    const message: ChatMessage = {
-      id: Date.now().toString(),
-      role,
-      content,
-      timestamp: new Date()
-    }
+    const userMsg: ChatMessage = { id: Date.now().toString(), role, content, timestamp: new Date() }
+    dispatch({ type: 'ADD_MESSAGE', payload: userMsg })
 
-    dispatch({ type: 'ADD_MESSAGE', payload: message })
+    if (role !== 'user') return
+    dispatch({ type: 'SET_LOADING', payload: true })
 
-    // If this is a user message, we might want to get an AI response
-    if (role === 'user') {
-      dispatch({ type: 'SET_LOADING', payload: true })
-      
-      try {
-        // Here you would typically call your AI service
-        // For now, we'll simulate a response
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        
-        const aiResponse: ChatMessage = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: `This is a simulated response to: "${content}"`,
-          timestamp: new Date()
+    try {
+      const history = [...state.messages, userMsg].map(m => ({ role: m.role, content: m.content }))
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider: 'openai', model: 'gpt-4o-mini', messages: history })
+      })
+
+      if (!res.body) throw new Error('No response body')
+
+      const aiId = (Date.now() + 1).toString()
+      const encoder = new TextEncoder()
+      const reader = res.body.getReader()
+      let assistantText = ''
+
+      // Add placeholder assistant message
+      dispatch({ type: 'ADD_MESSAGE', payload: { id: aiId, role: 'assistant', content: '', timestamp: new Date() } })
+
+      const decoder = new TextDecoder()
+      while (true) {
+        const { value, done } = await reader.read()
+        if (done) break
+        const chunk = decoder.decode(value)
+        // OpenAI streams as SSE: lines starting with "data: {json}" and a [DONE]
+        for (const line of chunk.split('\n')) {
+          const trimmed = line.trim()
+          if (!trimmed || !trimmed.startsWith('data:')) continue
+          const data = trimmed.slice(5).trim()
+          if (data === '[DONE]') continue
+          try {
+            const json = JSON.parse(data)
+            const delta = json.choices?.[0]?.delta?.content || ''
+            if (delta) {
+              assistantText += delta
+              dispatch({ type: 'UPDATE_MESSAGE', payload: { id: aiId, updates: { content: assistantText } } })
+            }
+          } catch {
+            // Non-JSON or error
+          }
         }
-        
-        dispatch({ type: 'ADD_MESSAGE', payload: aiResponse })
-      } catch (error) {
-        dispatch({ type: 'SET_ERROR', payload: error instanceof Error ? error.message : 'Failed to get response' })
-      } finally {
-        dispatch({ type: 'SET_LOADING', payload: false })
       }
+    } catch (err: any) {
+      dispatch({ type: 'SET_ERROR', payload: err?.message || 'Chat failed' })
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false })
     }
-  }, [])
+  }, [state.messages])
 
   // Add message
   const addMessage = useCallback((message: ChatMessage) => {
