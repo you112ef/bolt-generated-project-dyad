@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && wrangler pages publish dist",
+    "deploy:preview": "npm run build && wrangler pages publish dist --branch=preview"
   },
   "dependencies": {
     "monaco-editor": "^0.44.0",
@@ -22,7 +24,8 @@
     "typescript": "^5.2.2",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
-    "@types/node": "^20.5.7"
+    "@types/node": "^20.5.7",
+    "wrangler": "^3.0.0"
   },
   "keywords": ["chat", "code-editor", "api-integration", "web-demo"],
   "author": "Your Name",
